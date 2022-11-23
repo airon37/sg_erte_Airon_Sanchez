@@ -41,7 +41,25 @@ namespace sg_erte_Airon_Sanchez
         {
             using (bd_ertesEntities2 objBD = new bd_ertesEntities2())
             {
-
+                var modificar = objBD.EMPRESAS;
+                foreach (var est in modificar)
+                {
+                    var consulta = from sec in objBD.SECTORES
+                                   where sec.Descripcion == cbSector.Text
+                                   select new
+                                   {
+                                       sec.Id_sector
+                                   };
+                    if (est.Cif == txtCif.Text)
+                    {
+                        est.Cif = txtCif.Text;
+                        est.Nombre = txtNombre.Text;
+                        est.Domicilio = txtDomicilio.Text;
+                        est.Sector = consulta.First().Id_sector;
+                    }
+                }
+                objBD.SaveChanges();
+                this.Close();
             }
         }
 

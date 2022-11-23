@@ -61,7 +61,16 @@ namespace sg_erte_Airon_Sanchez
 
         private void dgvEmpresas_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
+            foreach (DataGridViewRow row in dgvEmpresas.Rows)
+            {
 
+                if (row.Selected)
+                {
+                    DataGridViewRow a = dgvEmpresas.Rows[row.Index];
+                    FormModifucarEmpresa f1 = new FormModifucarEmpresa(a.Cells[2].Value.ToString(), a.Cells[0].Value.ToString(), a.Cells[3].Value.ToString(), a.Cells[1].Value.ToString());
+                    f1.Show();
+                }
+            }
         }
     }
 }
