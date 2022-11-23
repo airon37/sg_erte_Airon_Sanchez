@@ -15,6 +15,27 @@ namespace sg_erte_Airon_Sanchez
         public admin_Empresas()
         {
             InitializeComponent();
+            dgvEmpresas.DataSource = null;
+            dgvEmpresas.Refresh();
+            using (bd_ertesEntities objBD = new bd_ertesEntities())
+            {
+
+            }
+        }
+
+        private void btnAniadir_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnModificar_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnEliminar_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
