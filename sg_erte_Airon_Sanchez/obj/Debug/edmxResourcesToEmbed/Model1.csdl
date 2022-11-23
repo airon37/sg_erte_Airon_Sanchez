@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="bd_ertesModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="EMPLEADOS">
+    <Key>
+      <PropertyRef Name="Dni" />
+    </Key>
+    <Property Name="Dni" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Apellidos" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Domicilio" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Foto" Type="Binary" MaxLength="Max" FixedLength="false" />
+    <Property Name="Empresa" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="EMPRESAS" Relationship="Self.empleados_fk_empr" FromRole="EMPLEADOS" ToRole="EMPRESAS" />
+  </EntityType>
+  <EntityType Name="EMPRESAS">
+    <Key>
+      <PropertyRef Name="Cif" />
+    </Key>
+    <Property Name="Cif" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Domicilio" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Sector" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="EMPLEADOS" Relationship="Self.empleados_fk_empr" FromRole="EMPRESAS" ToRole="EMPLEADOS" />
+    <NavigationProperty Name="SECTORES" Relationship="Self.empresas_fk_sec" FromRole="EMPRESAS" ToRole="SECTORES" />
+    <NavigationProperty Name="ERTES" Relationship="Self.ertes_fk_empr" FromRole="EMPRESAS" ToRole="ERTES" />
+  </EntityType>
+  <EntityType Name="ERTES">
+    <Key>
+      <PropertyRef Name="Id_erte" />
+    </Key>
+    <Property Name="Id_erte" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Empresa" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Fecha_inicio" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="Fecha_fin" Type="DateTime" Precision="0" />
+    <NavigationProperty Name="EMPRESAS" Relationship="Self.ertes_fk_empr" FromRole="ERTES" ToRole="EMPRESAS" />
+  </EntityType>
+  <EntityType Name="SECTORES">
+    <Key>
+      <PropertyRef Name="Id_sector" />
+    </Key>
+    <Property Name="Id_sector" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Descripcion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="EMPRESAS" Relationship="Self.empresas_fk_sec" FromRole="SECTORES" ToRole="EMPRESAS" />
+  </EntityType>
+  <Association Name="empleados_fk_empr">
+    <End Role="EMPRESAS" Type="Self.EMPRESAS" Multiplicity="1" />
+    <End Role="EMPLEADOS" Type="Self.EMPLEADOS" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="EMPRESAS">
+        <PropertyRef Name="Cif" />
+      </Principal>
+      <Dependent Role="EMPLEADOS">
+        <PropertyRef Name="Empresa" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="empresas_fk_sec">
+    <End Role="SECTORES" Type="Self.SECTORES" Multiplicity="1" />
+    <End Role="EMPRESAS" Type="Self.EMPRESAS" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SECTORES">
+        <PropertyRef Name="Id_sector" />
+      </Principal>
+      <Dependent Role="EMPRESAS">
+        <PropertyRef Name="Sector" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ertes_fk_empr">
+    <End Role="EMPRESAS" Type="Self.EMPRESAS" Multiplicity="1" />
+    <End Role="ERTES" Type="Self.ERTES" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="EMPRESAS">
+        <PropertyRef Name="Cif" />
+      </Principal>
+      <Dependent Role="ERTES">
+        <PropertyRef Name="Empresa" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="bd_ertesEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="EMPLEADOS" EntityType="Self.EMPLEADOS" />
+    <EntitySet Name="EMPRESAS" EntityType="Self.EMPRESAS" />
+    <EntitySet Name="ERTES" EntityType="Self.ERTES" />
+    <EntitySet Name="SECTORES" EntityType="Self.SECTORES" />
+    <AssociationSet Name="empleados_fk_empr" Association="Self.empleados_fk_empr">
+      <End Role="EMPRESAS" EntitySet="EMPRESAS" />
+      <End Role="EMPLEADOS" EntitySet="EMPLEADOS" />
+    </AssociationSet>
+    <AssociationSet Name="empresas_fk_sec" Association="Self.empresas_fk_sec">
+      <End Role="SECTORES" EntitySet="SECTORES" />
+      <End Role="EMPRESAS" EntitySet="EMPRESAS" />
+    </AssociationSet>
+    <AssociationSet Name="ertes_fk_empr" Association="Self.ertes_fk_empr">
+      <End Role="EMPRESAS" EntitySet="EMPRESAS" />
+      <End Role="ERTES" EntitySet="ERTES" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

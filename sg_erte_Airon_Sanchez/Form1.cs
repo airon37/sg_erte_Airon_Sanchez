@@ -51,7 +51,7 @@ namespace sg_erte_Airon_Sanchez
 
         private void ertesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            administrarErtes f2 = new administrarErtes();
+            FormAdministrarErtes f2 = new FormAdministrarErtes();
             if (this.MdiChildren.Length > 0)
             {
                 DialogResult rs2 = MessageBox.Show("¿Desea cerrar la ventana actual?", "Confirmacion",

@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="bd_ertesModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="EMPLEADOS">
+    <Key>
+      <PropertyRef Name="Dni" />
+    </Key>
+    <Property Name="Dni" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="Nombre" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="Apellidos" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="Email" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="Domicilio" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="Foto" Type="image" />
+    <Property Name="Empresa" Type="varchar" MaxLength="10" Nullable="false" />
+  </EntityType>
+  <EntityType Name="EMPRESAS">
+    <Key>
+      <PropertyRef Name="Cif" />
+    </Key>
+    <Property Name="Cif" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="Nombre" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="Domicilio" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="Sector" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ERTES">
+    <Key>
+      <PropertyRef Name="Id_erte" />
+    </Key>
+    <Property Name="Id_erte" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Empresa" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="Fecha_inicio" Type="date" Nullable="false" />
+    <Property Name="Fecha_fin" Type="date" />
+  </EntityType>
+  <EntityType Name="SECTORES">
+    <Key>
+      <PropertyRef Name="Id_sector" />
+    </Key>
+    <Property Name="Id_sector" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Descripcion" Type="varchar" MaxLength="100" Nullable="false" />
+  </EntityType>
+  <Association Name="empleados_fk_empr">
+    <End Role="EMPRESAS" Type="Self.EMPRESAS" Multiplicity="1" />
+    <End Role="EMPLEADOS" Type="Self.EMPLEADOS" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="EMPRESAS">
+        <PropertyRef Name="Cif" />
+      </Principal>
+      <Dependent Role="EMPLEADOS">
+        <PropertyRef Name="Empresa" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="empresas_fk_sec">
+    <End Role="SECTORES" Type="Self.SECTORES" Multiplicity="1" />
+    <End Role="EMPRESAS" Type="Self.EMPRESAS" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SECTORES">
+        <PropertyRef Name="Id_sector" />
+      </Principal>
+      <Dependent Role="EMPRESAS">
+        <PropertyRef Name="Sector" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ertes_fk_empr">
+    <End Role="EMPRESAS" Type="Self.EMPRESAS" Multiplicity="1" />
+    <End Role="ERTES" Type="Self.ERTES" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="EMPRESAS">
+        <PropertyRef Name="Cif" />
+      </Principal>
+      <Dependent Role="ERTES">
+        <PropertyRef Name="Empresa" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="bd_ertesModelStoreContainer">
+    <EntitySet Name="EMPLEADOS" EntityType="Self.EMPLEADOS" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="EMPRESAS" EntityType="Self.EMPRESAS" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ERTES" EntityType="Self.ERTES" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="SECTORES" EntityType="Self.SECTORES" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="empleados_fk_empr" Association="Self.empleados_fk_empr">
+      <End Role="EMPRESAS" EntitySet="EMPRESAS" />
+      <End Role="EMPLEADOS" EntitySet="EMPLEADOS" />
+    </AssociationSet>
+    <AssociationSet Name="empresas_fk_sec" Association="Self.empresas_fk_sec">
+      <End Role="SECTORES" EntitySet="SECTORES" />
+      <End Role="EMPRESAS" EntitySet="EMPRESAS" />
+    </AssociationSet>
+    <AssociationSet Name="ertes_fk_empr" Association="Self.ertes_fk_empr">
+      <End Role="EMPRESAS" EntitySet="EMPRESAS" />
+      <End Role="ERTES" EntitySet="ERTES" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
